@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Users, AlertTriangle, CheckCircle, Clock, Eye, FileText, Brain, Search, Download, Edit } from 'lucide-react';
+import { ArrowLeft, Calendar, Users, AlertTriangle, CheckCircle, Clock, Eye, Brain, Search, Download, Edit } from 'lucide-react';
 import type { Contract } from '../types/contract';
 
 export default function ContractDetail() {
