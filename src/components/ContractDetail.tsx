@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Users, AlertTriangle, CheckCircle, Clock, Eye, FileText, Brain, Search } from 'lucide-react';
+import { ArrowLeft, Calendar, Users, AlertTriangle, CheckCircle, Clock, Eye, FileText, Brain, Search, Download, Edit } from 'lucide-react';
 import type { Contract } from '../types/contract';
 
 export default function ContractDetail() {
@@ -55,13 +55,13 @@ export default function ContractDetail() {
     const baseClasses = "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium";
     switch (status) {
       case 'Active':
-        return `${baseClasses} bg-green-100 text-green-800`;
+        return `${baseClasses} bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300`;
       case 'Expired':
-        return `${baseClasses} bg-red-100 text-red-800`;
+        return `${baseClasses} bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300`;
       case 'Renewal Due':
-        return `${baseClasses} bg-yellow-100 text-yellow-800`;
+        return `${baseClasses} bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300`;
       default:
-        return `${baseClasses} bg-gray-100 text-gray-800`;
+        return `${baseClasses} bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300`;
     }
   };
 
@@ -69,26 +69,26 @@ export default function ContractDetail() {
     const baseClasses = "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium";
     switch (risk) {
       case 'Low':
-        return `${baseClasses} bg-green-100 text-green-800`;
+        return `${baseClasses} bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300`;
       case 'Medium':
-        return `${baseClasses} bg-yellow-100 text-yellow-800`;
+        return `${baseClasses} bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300`;
       case 'High':
-        return `${baseClasses} bg-red-100 text-red-800`;
+        return `${baseClasses} bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300`;
       default:
-        return `${baseClasses} bg-gray-100 text-gray-800`;
+        return `${baseClasses} bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300`;
     }
   };
 
   const getInsightBadge = (risk: string) => {
     switch (risk) {
       case 'Low':
-        return 'bg-green-50 border-green-200 text-green-800';
+        return 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700 text-green-800 dark:text-green-300';
       case 'Medium':
-        return 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        return 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700 text-yellow-800 dark:text-yellow-300';
       case 'High':
-        return 'bg-red-50 border-red-200 text-red-800';
+        return 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700 text-red-800 dark:text-red-300';
       default:
-        return 'bg-gray-50 border-gray-200 text-gray-800';
+        return 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-300';
     }
   };
 
@@ -102,10 +102,10 @@ export default function ContractDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors duration-200">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading contract details...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading contract details...</p>
         </div>
       </div>
     );
@@ -113,14 +113,14 @@ export default function ContractDetail() {
 
   if (error || !contract) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors duration-200">
         <div className="text-center">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <div className="bg-red-100 dark:bg-red-900/50 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded">
             {error || 'Contract not found'}
           </div>
           <button
             onClick={() => navigate('/dashboard')}
-            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors duration-200"
           >
             Back to Dashboard
           </button>
@@ -130,81 +130,75 @@ export default function ContractDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            <span>Back to Dashboard</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{contract.name}</h1>
-              <div className="flex items-center space-x-4 text-sm text-gray-600">
-                <div className="flex items-center space-x-1">
-                  <Users className="h-4 w-4" />
-                  <span>{contract.parties}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>Expires: {formatDate(contract.expiry)}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2">
-                {getStatusIcon(contract.status)}
-                <span className={getStatusBadge(contract.status)}>
-                  {contract.status}
-                </span>
-              </div>
-              <span className={getRiskBadge(contract.risk)}>
-                Risk: {contract.risk}
-              </span>
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-3 sm:space-y-0">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 self-start"
+            >
+              <ArrowLeft className="h-5 w-5 mr-2" />
+              Back to Dashboard
+            </button>
+            <div className="flex space-x-2 sm:space-x-3">
+              <button className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-200">
+                <Download className="h-4 w-4 inline mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Download</span>
+              </button>
+              <button className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                <Edit className="h-4 w-4 inline mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Edit</span>
+              </button>
             </div>
           </div>
-
-          {contract.start && (
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="font-medium text-gray-700">Start Date:</span>
-                  <span className="ml-2 text-gray-600">{formatDate(contract.start)}</span>
+          
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 transition-colors duration-200">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-4 sm:space-y-0">
+              <div className="flex-1">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{contract.name}</h1>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4">Contract ID: {contract.id}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                  <div className="flex items-center">
+                    <Users className="h-4 w-4 text-gray-400 dark:text-gray-500 mr-2" />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{contract.parties}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 text-gray-400 dark:text-gray-500 mr-2" />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Expires: {formatDate(contract.expiry)}</span>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700">Contract ID:</span>
-                  <span className="ml-2 text-gray-600">{contract.id}</span>
+              </div>
+              <div className="flex flex-row sm:flex-col items-start sm:items-end space-x-2 sm:space-x-0 sm:space-y-2">
+                <div className="flex items-center space-x-2">
+                  {getStatusIcon(contract.status)}
+                  <span className={getStatusBadge(contract.status)}>
+                    {contract.status}
+                  </span>
                 </div>
+                <span className={getRiskBadge(contract.risk)}>
+                  {contract.risk}
+                </span>
               </div>
             </div>
-          )}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Clauses Section */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center space-x-2 mb-4">
-                <FileText className="h-5 w-5 text-indigo-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Contract Clauses</h2>
-              </div>
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Left Column - Contract Details */}
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+            {/* Contract Clauses */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 transition-colors duration-200">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Contract Clauses</h2>
               
               {contract.clauses && contract.clauses.length > 0 ? (
                 <div className="space-y-4">
                   {contract.clauses.map((clause, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                    <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-medium text-gray-900">{clause.title}</h3>
+                        <h3 className="font-medium text-gray-900 dark:text-gray-100">{clause.title}</h3>
                         <div className="flex items-center space-x-1">
                           <span className="text-xs text-gray-500">Confidence:</span>
                           <span className="text-xs font-medium text-indigo-600">
@@ -212,9 +206,9 @@ export default function ContractDetail() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-gray-600 text-sm">{clause.summary}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">{clause.summary}</p>
                       <div className="mt-2">
-                        <div className="bg-gray-200 rounded-full h-1.5">
+                        <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
                           <div
                             className="bg-indigo-600 h-1.5 rounded-full"
                             style={{ width: `${clause.confidence * 100}%` }}
@@ -225,15 +219,15 @@ export default function ContractDetail() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No clauses available for this contract.</p>
+                <p className="text-gray-500 dark:text-gray-400">No clauses available for this contract.</p>
               )}
             </div>
 
             {/* AI Insights Section */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-200">
               <div className="flex items-center space-x-2 mb-4">
                 <Brain className="h-5 w-5 text-purple-600" />
-                <h2 className="text-lg font-semibold text-gray-900">AI Insights</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">AI Insights</h2>
               </div>
               
               {contract.insights && contract.insights.length > 0 ? (
@@ -261,31 +255,31 @@ export default function ContractDetail() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No AI insights available for this contract.</p>
+                <p className="text-gray-500 dark:text-gray-400">No AI insights available for this contract.</p>
               )}
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
+          {/* Right Column - Sidebar */}
+          <div className="space-y-4 sm:space-y-6">
             {/* Evidence Panel Toggle */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-200">
               <button
                 onClick={() => setShowEvidencePanel(!showEvidencePanel)}
-                className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                className="w-full flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"
               >
                 <div className="flex items-center space-x-2">
                   <Search className="h-5 w-5 text-gray-600" />
-                  <span className="font-medium text-gray-900">Evidence Panel</span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">Evidence Panel</span>
                 </div>
                 <Eye className="h-4 w-4 text-gray-500" />
               </button>
 
               {showEvidencePanel && contract.evidence && (
                 <div className="mt-4 space-y-3">
-                  <h3 className="text-sm font-medium text-gray-900">Retrieved Evidence</h3>
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Retrieved Evidence</h3>
                   {contract.evidence.map((evidence, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-3">
+                    <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-medium text-gray-700">
                           {evidence.source}
@@ -294,9 +288,9 @@ export default function ContractDetail() {
                           {Math.round(evidence.relevance * 100)}% relevant
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 italic">"{evidence.snippet}"</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 italic">"{evidence.snippet}"</p>
                       <div className="mt-2">
-                        <div className="bg-gray-200 rounded-full h-1">
+                        <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-1">
                           <div
                             className="bg-indigo-600 h-1 rounded-full"
                             style={{ width: `${evidence.relevance * 100}%` }}
@@ -309,20 +303,20 @@ export default function ContractDetail() {
               )}
             </div>
 
-            {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-sm font-medium text-gray-900 mb-3">Quick Actions</h3>
+            {/* Contract Clauses */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 transition-colors duration-200">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Contract Clauses</h2>
               <div className="space-y-2">
-                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
                   Download Contract
                 </button>
-                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
                   Export Analysis
                 </button>
-                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
                   Schedule Review
                 </button>
-                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
                   Share Contract
                 </button>
               </div>

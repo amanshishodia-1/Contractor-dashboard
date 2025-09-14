@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { X, Upload, File, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { X, Upload, FileText, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import type { UploadFile } from '../types/contract';
 
 interface UploadModalProps {
@@ -108,35 +108,36 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Upload Contracts</h2>
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <X className="h-6 w-6" />
-          </button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-2 sm:p-4 z-50 transition-all duration-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto transition-colors duration-200 mx-2 sm:mx-0">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">Upload Contract</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 p-1"
+            >
+              <X className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
+          </div>
         </div>
-
         <div className="p-6">
           {/* Upload Area */}
           <div
+            className={`border-2 border-dashed rounded-lg p-4 sm:p-8 text-center transition-all duration-200 ${
+              isDragging
+                ? 'border-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
+                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+            }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              isDragging
-                ? 'border-indigo-500 bg-indigo-50'
-                : 'border-gray-300 hover:border-gray-400'
-            }`}
           >
-            <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <Upload className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
               Drop files here or click to browse
             </h3>
-            <p className="text-gray-500 mb-4">
+            <p className="text-gray-500 dark:text-gray-400 mb-4">
               Support for PDF, DOC, DOCX files up to 10MB each
             </p>
             <button
@@ -157,38 +158,26 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
 
           {/* File List */}
           {files.length > 0 && (
-            <div className="mt-6">
-              <h4 className="text-sm font-medium text-gray-900 mb-3">
-                Uploaded Files ({files.length})
-              </h4>
+            <div className="mt-4 sm:mt-6">
+              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Selected Files:</h4>
               <div className="space-y-3 max-h-60 overflow-y-auto">
                 {files.map((file) => (
                   <div
                     key={file.id}
-                    className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
                   >
-                    <File className="h-8 w-8 text-gray-400" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {file.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {formatFileSize(file.size)}
-                      </p>
-                      {file.status === 'uploading' && (
-                        <div className="mt-1">
-                          <div className="bg-gray-200 rounded-full h-1.5">
-                            <div
-                              className="bg-indigo-600 h-1.5 rounded-full transition-all duration-300"
-                              style={{ width: `${file.progress}%` }}
-                            />
-                          </div>
-                        </div>
-                      )}
+                    <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+                      <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{file.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
                     </div>
                     <div className="flex items-center space-x-2">
                       {getStatusIcon(file.status)}
-                      <span className="text-xs text-gray-500 capitalize">
+                      <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                         {file.status === 'uploading' ? `${Math.round(file.progress)}%` : file.status}
                       </span>
                     </div>
@@ -199,10 +188,10 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
           )}
         </div>
 
-        <div className="flex justify-end space-x-3 p-6 border-t border-gray-200">
+        <div className="flex justify-end space-x-3 p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={handleClose}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 text-sm sm:text-base"
           >
             Close
           </button>
@@ -213,9 +202,9 @@ export default function UploadModal({ isOpen, onClose }: UploadModalProps) {
                 console.log('Processing uploaded files:', files);
                 handleClose();
               }}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="px-3 sm:px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 text-sm sm:text-base"
             >
-              Process Files
+              Choose Files
             </button>
           )}
         </div>
