@@ -1,4 +1,3 @@
-import React from 'react';
 import { FileText, BarChart3, FileBarChart, Settings, Upload } from 'lucide-react';
 
 interface SidebarProps {

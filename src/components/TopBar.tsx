@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search, Filter, ChevronDown, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
